@@ -19,7 +19,7 @@
     <name>resource-server</name>
     <description>resource-server</description>
     <properties>
-        <start.class>ru.itis.aivar.server.resource.ResourseServerApplication</start.class>
+        <start.class>ru.itis.aivar.server.resource.ResourceServerApplication</start.class>
         <java.version>17</java.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
     </properties>

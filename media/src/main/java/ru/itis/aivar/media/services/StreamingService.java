@@ -1,10 +1,10 @@
 package ru.itis.aivar.media.services;
 
-import org.springframework.core.io.Resource;
-import reactor.core.publisher.Mono;
+import ru.itis.aivar.media.messaging.serializable.VideoRequestMessage;
+import ru.itis.aivar.media.messaging.serializable.VideoResponseMessage;
+
+import java.io.IOException;
 
 public interface StreamingService {
-
-    Mono<Resource> getVideo(String id);
-
+    VideoResponseMessage getVideoPart(VideoRequestMessage videoRequestMessage) throws IOException;
 }

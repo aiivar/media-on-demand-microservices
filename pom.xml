@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>api-gateway</module>
         <module>media</module>
         <module>service-discovery</module>
         <module>resource-server</module>

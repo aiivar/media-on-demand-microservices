@@ -1,6 +1,7 @@
 package ru.itis.aivar.streaming.video.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import ru.itis.aivar.media.messaging.serializable.VideoRequestMessage;
@@ -15,6 +16,8 @@ public class VideoStreamingServiceImpl implements VideoStreamingService {
 
     private RabbitTemplate rabbitTemplate;
 
+    private Queue queue;
+
     @Override
     public VideoResponseMessage getVideoPart(VideoPartForm videoPartForm) {
         VideoRequestMessage videoRequestMessage = VideoRequestMessage.builder()
@@ -28,7 +31,7 @@ public class VideoStreamingServiceImpl implements VideoStreamingService {
     }
 
     private VideoResponseMessage sendMessageAndReceiveResponse(VideoRequestMessage videoRequestMessage) {
-        return (VideoResponseMessage) rabbitTemplate.convertSendAndReceive(videoRequestMessage);
+        return (VideoResponseMessage) rabbitTemplate.convertSendAndReceive(queue.getName(), videoRequestMessage);
     }
 
     private long megaBytesToBytes(long megaBytes) {

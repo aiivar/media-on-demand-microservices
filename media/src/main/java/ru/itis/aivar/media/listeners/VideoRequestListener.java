@@ -16,7 +16,7 @@ public class VideoRequestListener {
 
     private StreamingService streamingService;
 
-    @RabbitListener(queues = "#{videoQueue.name}")
+    @RabbitListener(queues = "#{videoQueue.name}", containerFactory = "containerFactory")
     public VideoResponseMessage processVideoPartRequest(VideoRequestMessage videoRequestMessage) {
         try {
             return streamingService.getVideoPart(videoRequestMessage);

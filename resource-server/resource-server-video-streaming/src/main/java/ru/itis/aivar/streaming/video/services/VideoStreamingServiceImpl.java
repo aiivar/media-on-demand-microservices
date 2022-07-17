@@ -1,7 +1,6 @@
 package ru.itis.aivar.streaming.video.services;
 
 import lombok.AllArgsConstructor;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import ru.itis.aivar.streaming.video.dto.form.VideoPartForm;
 @AllArgsConstructor
 public class VideoStreamingServiceImpl implements VideoStreamingService {
 
-    private static final long CHUNK_SIZE_MB = 1L;
+    private static final long CHUNK_SIZE_KB = 1L;
 
     private static final String ROUTING_KEY = "video.streaming.partly";
 
@@ -27,7 +26,7 @@ public class VideoStreamingServiceImpl implements VideoStreamingService {
                 .mediaFormat(videoPartForm.getVideoFormat())
                 .uuid(videoPartForm.getUuid())
                 .bytesStart(videoPartForm.getStart())
-                .bytesChunkSize(megaBytesToBytes(CHUNK_SIZE_MB*5))
+                .bytesChunkSize(kiloBytesToBytes(CHUNK_SIZE_KB*200))
                 .build();
 
         return sendMessageAndReceiveResponse(videoRequestMessage);
@@ -37,7 +36,7 @@ public class VideoStreamingServiceImpl implements VideoStreamingService {
         return (VideoResponseMessage) rabbitTemplate.convertSendAndReceive(topicExchange.getName(), ROUTING_KEY, videoRequestMessage);
     }
 
-    private long megaBytesToBytes(long megaBytes) {
-        return megaBytes * 1024 * 1024;
+    private long kiloBytesToBytes(long megaBytes) {
+        return megaBytes * 1024;
     }
 }

@@ -33,7 +33,7 @@ public class VideoStreamingService implements StreamingService {
         VideoResponseMessage videoResponseMessage = VideoResponseMessage.builder()
                 .bytes(bytes)
                 .start(videoRequestMessage.getBytesStart())
-                .end(videoRequestMessage.getBytesStart() + bytes.length)
+                .end(videoRequestMessage.getBytesStart() + bytes.length - 1)
                 .videoSize(resource.contentLength())
                 .mediaFormat(videoRequestMessage.getMediaFormat())
                 .build();
@@ -58,6 +58,7 @@ public class VideoStreamingService implements StreamingService {
 
             return buffer;
         } catch (EOFException e) {
+            log.error("End of file", e);
             return new byte[0];
         }
     }

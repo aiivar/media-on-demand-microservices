@@ -24,7 +24,7 @@ public class VideoStreamingServiceImpl implements VideoStreamingService {
                 .mediaFormat(videoPartForm.getVideoFormat())
                 .uuid(videoPartForm.getUuid())
                 .bytesStart(videoPartForm.getStart())
-                .bytesChunkSize(megaBytesToBytes(CHUNK_SIZE_MB))
+                .bytesChunkSize(megaBytesToBytes(CHUNK_SIZE_MB*5))
                 .build();
 
         return sendMessageAndReceiveResponse(videoRequestMessage);

@@ -1,6 +1,7 @@
 package ru.itis.aivar.media.services;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.io.RandomAccessFile;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class VideoStreamingService implements StreamingService {
 
     private static final String FORMAT = "classpath:video/%s.%s";
@@ -28,19 +30,29 @@ public class VideoStreamingService implements StreamingService {
                 videoRequestMessage.getMediaFormat())
         );
         byte[] bytes = readBytesInRange(resource.getFile(), videoRequestMessage.getBytesStart(), videoRequestMessage.getBytesChunkSize());
-        return VideoResponseMessage.builder()
+        VideoResponseMessage videoResponseMessage = VideoResponseMessage.builder()
                 .bytes(bytes)
                 .start(videoRequestMessage.getBytesStart())
                 .end(videoRequestMessage.getBytesStart() + bytes.length)
                 .videoSize(resource.contentLength())
                 .mediaFormat(videoRequestMessage.getMediaFormat())
                 .build();
+        log.info("Response data: {}/{} - bytes {} - start {} - end {}",
+                videoRequestMessage.getUuid(), videoResponseMessage.getMediaFormat(),
+                bytes.length,
+                videoResponseMessage.getStart(), videoResponseMessage.getEnd());
+        return videoResponseMessage;
     }
 
     private byte[] readBytesInRange(File sourceFile, long startingOffset, long length) throws IOException {
-        try (RandomAccessFile randomAccessFile = new RandomAccessFile(sourceFile, "r"))
-        {
-            byte[] buffer = new byte[(int) length];
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(sourceFile, "r")) {
+            long available = randomAccessFile.length() - startingOffset;
+            byte[] buffer;
+            if (available < length) {
+                buffer = new byte[(int) available];
+            } else {
+                buffer = new byte[(int) length];
+            }
             randomAccessFile.seek(startingOffset);
             randomAccessFile.readFully(buffer);
 

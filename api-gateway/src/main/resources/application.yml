@@ -1,16 +1,18 @@
 server:
   port: 8080
-zuul:
-  routes:
-    resources:
-      path: /resources/**
-      service-id: resource-server
 
 spring:
   application:
     name: api-gateway
   main:
     allow-circular-references: true
+  cloud:
+    gateway:
+      routes:
+        - id: resource-server
+          uri: lb://RESOURCE-SERVER
+          predicates:
+            - Path=/resources/**
 
 eureka:
   client:

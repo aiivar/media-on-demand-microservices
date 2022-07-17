@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.itis.aivar.media.messaging.serializable.VideoRequestMessage;
 import ru.itis.aivar.media.messaging.serializable.VideoResponseMessage;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -26,10 +27,11 @@ public class VideoStreamingService implements StreamingService {
                 videoRequestMessage.getUuid(),
                 videoRequestMessage.getMediaFormat())
         );
+        byte[] bytes = readBytesInRange(resource.getFile(), videoRequestMessage.getBytesStart(), videoRequestMessage.getBytesChunkSize());
         return VideoResponseMessage.builder()
-                .bytes(readBytesInRange(resource.getFile(), videoRequestMessage.getBytesStart(), videoRequestMessage.getBytesChunkSize()))
+                .bytes(bytes)
                 .start(videoRequestMessage.getBytesStart())
-                .end(videoRequestMessage.getBytesStart() + videoRequestMessage.getBytesChunkSize() - 1)
+                .end(videoRequestMessage.getBytesStart() + bytes.length)
                 .videoSize(resource.contentLength())
                 .mediaFormat(videoRequestMessage.getMediaFormat())
                 .build();
@@ -43,6 +45,8 @@ public class VideoStreamingService implements StreamingService {
             randomAccessFile.readFully(buffer);
 
             return buffer;
+        } catch (EOFException e) {
+            return new byte[0];
         }
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
-public class BearerOrParamTokenExtractor extends BearerTokenExtractor {
+public class BearerOrRequestParamTokenExtractor extends BearerTokenExtractor {
 
     @Override
     protected String extractToken(HttpServletRequest request) {

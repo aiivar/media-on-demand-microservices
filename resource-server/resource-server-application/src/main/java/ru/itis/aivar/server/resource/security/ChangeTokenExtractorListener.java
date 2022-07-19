@@ -15,7 +15,7 @@ import javax.servlet.Filter;
 public class ChangeTokenExtractorListener implements ApplicationListener<ApplicationReadyEvent> {
 
     @Autowired
-    BearerOrParamTokenExtractor tokenExtractor;
+    BearerOrRequestParamTokenExtractor tokenExtractor;
 
     @Autowired
     Filter springSecurityFilterChain;

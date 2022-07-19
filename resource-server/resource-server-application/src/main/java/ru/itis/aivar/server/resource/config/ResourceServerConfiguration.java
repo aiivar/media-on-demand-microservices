@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableResourceServer
 @EnableWebSecurity
 public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);

@@ -1,0 +1,6 @@
+
+GET http://localhost:8080/resource-server/video/sample/mp4
+Accept: video/mp4
+Range: bytes=40000-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidmlkZW8iXSwidXNlcl9uYW1lIjoidXNlciIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2NTgyMDUzMjIsImF1dGhvcml0aWVzIjpbIlVTRVIiXSwianRpIjoiYWRjZmViNGYtNTliOC00Yzc0LTg4MGMtZmQ1YmQ1NmRiYjEwIiwiY2xpZW50X2lkIjoidmlkZW8tc3RyZWFtaW5nIn0.dUIgYMhH1R3SgLe9JZSAoi5qVZ4KzhNAnE1F1HaRikU
+#
